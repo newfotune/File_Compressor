@@ -2,7 +2,9 @@
 #include <unordered_map>
 #include <fstream>
 #include "Node.h"
-#include "P_Queue.h"
+//#include "P_Queue.h"
+#include <iostream>
+#include <queue>
 
 
 typedef std::string String;
@@ -12,20 +14,21 @@ typedef std::ifstream IfStream;
 std::unordered_map<char, int> freq_map;
 std::unordered_map<char, String> encodingMap;
 String sb;
-node_ptr my_root;
+Node *my_root;
 
 //Function declarations----------------
-std::unordered_map<char, int> getCharacterFrequencies(const String path);
+std::unordered_map<char, int> getCharacterFrequencies(const String & path);
 void insert_into_freq_map(const char & theChar);
 void getFrequencies(const String &current_line);
-std::unordered_map<char, String> getEncoding(std::unordered_map<char, int> freq);
+std::unordered_map<char, String> getEncoding(const std::unordered_map<char, int> & freq);
+void getEncoding(Node * root, String sb);
 
 /**
 * Goes through the text and puts the every char in the map with its freq.
 * @param path the text to be parsed.
 * @return the map containing the character and its frequencies.
 */
-std::unordered_map<char, int> getCharacterFrequencies(const String path) { 
+std::unordered_map<char, int> getCharacterFrequencies(const String & path) { 
 	String current_line;
 	IfStream myFile;
 	myFile.open(path);
@@ -77,24 +80,41 @@ void getFrequencies(const String &current_line) {
 * @param frequencies the map containing the char and its freq.
 * @return the maps containing the char and its binary representation.
 */
-std::unordered_map<char, String> getEncoding(std::unordered_map<char, int> freq) {
-	for (auto& p : freq_map)
-		std::cout << " " << p.first << " => " << p.second << '\n';
-	Priority_Queue<Node> my_q;
+std::unordered_map<char, String> getEncoding(const std::unordered_map<char, int> & freq) {
+	/*for (auto& p : freq_map)
+		std::cout << " " << p.first << " => " << p.second << '\n';*/
+	//Priority_Queue<Node> my_q;
+	std::priority_queue<Node> my_q; //using the STL's priority queue instead of mine :(
 
 	for (auto& p : freq_map) {
-		const node_ptr n = new Node();
-		n->data = p.first;
-		n->total = p.second;
-
+		const node_ptr n = new Node(p.first, p.second);
 		my_q.push(*n);
 	}
 
-	for (size_t i = 0; i < my_q.size(); i++) {
-		auto n = my_q.pop();
-		std::cout << n.data << "-" << n.total << std::endl;
-	}
+	while (my_q.size() > 1) {
+		//my_q.print();
+		Node n1 = my_q.top();
+		my_q.pop(); //current smallest.
+		Node n2 = my_q.top(); 
+		my_q.pop();
+		Node *newNode = new Node('$', n1.total+n2.total);
 
+		Node * left = new Node(n1.data, n1.total);
+		left->left = n1.left; left->right = n1.right;
+
+		Node * right = new Node(n2.data, n2.total);
+		right->left = n2.left; right->right = n2.right;
+		
+		newNode->left = left; newNode->right = right;
+		my_q.push(*newNode);
+	}
+	Node n = my_q.top(); my_q.pop();
+	my_root = &n;
+	getEncoding(my_root, sb);
+
+	std::cout << "------------------------" <<std::endl;
+	/*for (auto& p : encodingMap)
+		std::cout << " " << p.first << " => " << p.second << '\n';*/
 	return encodingMap;
 }
 
@@ -103,16 +123,36 @@ std::unordered_map<char, String> getEncoding(std::unordered_map<char, int> freq)
 * @param myRoot the root of the tree.
 * @param sb the string builder representing
 */
-void getEncoding(node_ptr root) {
+void getEncoding(Node * root, String sb) {
+	//std::cout << root.data << "-->>" << root.total << std::endl;
+	if (root == NULL)
+		return;
 
+	if (root->data != '$') {
+		//std::cout << root->data << ": " << sb << "\n";
+		encodingMap.insert({ root->data, sb });
+		return;
+	}
+		
+	getEncoding(root->left, sb + "0");
+	getEncoding(root->right, sb + "1");
 }
 
-Node buildHuffsTree(Priority_Queue<Node> &myNodes) {
-
-	return Node();
-}
 
 double getCompressionRatio(std::unordered_map<char, int> &freq, std::unordered_map<char, String> encoding) {
+	double myTotal = 0.0;
+	for (auto& p : freq_map) {
+		myTotal += p.second;
+	}
+	myTotal *= 8;
 
-	return 0.0;
+	String s;// = new String();
+	for (auto& p : encodingMap) {
+		//std::cout << p.first << "->" << p.second << std::endl;
+		s = s + p.second;
+	}
+	double s2 = s.length();
+
+	std::cout << "total = " << myTotal << " length = " << s2 << std::endl;
+	return myTotal / s2;
 }

@@ -14,7 +14,7 @@ public:
 	bool isEmpty();
 
 	//delete this function;
-	void print(std::ostream &os);
+	void print();
 
 private:
 	std::vector<T> arr;
@@ -38,9 +38,10 @@ bool Priority_Queue<T>::isEmpty() {
 }
 
 template <typename T>
-void Priority_Queue<T>::print(std::ostream &os) {
-	for (int i = 1; i < current_spot; i++)
-		os << arr[i] << " ";
+void Priority_Queue<T>::print() {
+	for (int i = 1; i < current_spot; i++) {
+		std::cout << arr[i].data << "->" << arr[i].total << " ";
+	}	
 	std::cout << std::endl;
 }
 
