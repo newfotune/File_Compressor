@@ -1,3 +1,7 @@
-﻿  Main.cpp
+﻿  Huffman.cpp
+c:\users\fortune\documents\visual studio 2015\projects\file_compressor\huffman\huffman.cpp(29): warning C4305: 'argument': truncation from 'const ext_char' to 'char'
+c:\users\fortune\documents\visual studio 2015\projects\file_compressor\huffman\huffman.cpp(29): warning C4309: 'argument': truncation of constant value
+c:\users\fortune\documents\visual studio 2015\projects\file_compressor\huffman\huffman.cpp(146): warning C4018: '<': signed/unsigned mismatch
+c:\users\fortune\documents\visual studio 2015\projects\file_compressor\huffman\huffman.cpp(148): warning C4018: '<': signed/unsigned mismatch
   Huffman.vcxproj -> C:\Users\Fortune\Documents\Visual Studio 2015\Projects\File_Compressor\Debug\Huffman.exe
   Huffman.vcxproj -> C:\Users\Fortune\Documents\Visual Studio 2015\Projects\File_Compressor\Debug\Huffman.pdb (Full PDB)

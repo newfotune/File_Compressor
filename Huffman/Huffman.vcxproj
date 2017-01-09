@@ -142,18 +142,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\..\JavaProj\Huffman-Encoding\missisipi.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bstream.h" />
     <ClInclude Include="Huffman.h" />
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="P_Queue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bstream.cpp" />
+    <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="P_Queue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
